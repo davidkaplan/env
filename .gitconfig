@@ -1,0 +1,54 @@
+[user]
+	name = David Kaplan
+	email = dkappy@gmail.com
+
+[difftool]
+	prompt = false
+[mergetool]
+	keepBackup = false
+
+# Remember to create these files
+# 
+# /usr/local/bin/extMerge:
+# #!/bin/sh
+# /Applications/p4merge.app/Contents/MacOS/p4merge $*
+#
+# /usr/local/bin/extDiff:
+# #!/bin/sh
+# [ $# -eq 7 ] && /usr/local/bin/extMerge "$2" "$5"
+
+
+[merge]
+  tool = extMerge
+[mergetool "extMerge"]
+  cmd = extMerge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+  trustExitCode = false
+[diff]
+  external = extDiff
+
+
+# [merge]
+# 	tool = p4mergetool
+# [mergetool "p4mergetool"]
+# 	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
+# 	trustExitCode = false
+# [mergetool]
+# 	keepBackup = false
+# [diff]
+# 	tool = p4mergetool
+# [difftool "p4mergetool"]
+# 	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
+
+
+
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
+[alias]
+	ll = log --color --graph --pretty=format:'%Cred%h %Cgreen(%cr)%Creset : %d %s -- %C(bold yellow)%an%Creset' -25
+	dif = diff --no-ext-diff
+[color]
+	ui = auto
+[pull]
+	rebase = false
